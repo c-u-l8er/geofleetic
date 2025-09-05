@@ -1,0 +1,153 @@
+<.flash_group flash={@flash} />
+
+<!-- Hero Section -->
+<div class="relative isolate px-6 pt-14 lg:px-8">
+  <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
+    <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+  </div>
+
+  <div class="mx-auto max-w-4xl py-32 sm:py-48 lg:py-56">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+        🚀 <span class="text-blue-600">GeoFleetic</span> Phase 3
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-600">
+        Real-Time Fleet Management System with Advanced Geofencing, Intelligent Dispatch, and Live Dashboards
+      </p>
+      <div class="mt-10 flex items-center justify-center gap-x-6">
+        <.link navigate={~p"/dashboard/default_fleet"} class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          🚀 Launch Dashboard
+        </.link>
+        <.link navigate={~p"/fleet/default_fleet"} class="text-base font-semibold leading-6 text-gray-900">
+          View Fleet <span aria-hidden="true">→</span>
+        </.link>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+    <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        Complete Real-Time Fleet Management
+      </h2>
+      <p class="mt-6 text-lg leading-8 text-gray-600">
+        Built with Elixir, Phoenix, and Stellarmorphism for type-safe, high-performance fleet operations
+      </p>
+    </div>
+
+    <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+      <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+            <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-blue-600">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.458-7.5 11.458s-7.5-4.316-7.5-11.458a7.5 7.5 0 1115 0z" />
+              </svg>
+            </div>
+            Real-Time Tracking
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+            <p class="flex-auto">Sub-50ms end-to-end latency for location updates with WebSocket streaming and batch processing.</p>
+            <p class="mt-6">
+              <.link navigate={~p"/dashboard/default_fleet"} class="text-sm font-semibold leading-6 text-blue-600">
+                View live tracking <span aria-hidden="true">→</span>
+              </.link>
+            </p>
+          </dd>
+        </div>
+
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+            <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-green-600">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+              </svg>
+            </div>
+            Advanced Geofencing
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+            <p class="flex-auto">5 types of geofences with hysteresis, dwell time tracking, and predictive breach detection.</p>
+            <p class="mt-6">
+              <.link navigate={~p"/dashboard/default_fleet"} class="text-sm font-semibold leading-6 text-green-600">
+                Manage geofences <span aria-hidden="true">→</span>
+              </.link>
+            </p>
+          </dd>
+        </div>
+
+        <div class="flex flex-col">
+          <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+            <div class="h-10 w-10 flex items-center justify-center rounded-lg bg-purple-600">
+              <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+              </svg>
+            </div>
+            Intelligent Dispatch
+          </dt>
+          <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+            <p class="flex-auto">AI-powered vehicle assignment with emergency prioritization and real-time route optimization.</p>
+            <p class="mt-6">
+              <.link navigate={~p"/dispatch/default_fleet"} class="text-sm font-semibold leading-6 text-purple-600">
+                View dispatch system <span aria-hidden="true">→</span>
+              </.link>
+            </p>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Section -->
+<div class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <dl class="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-4">
+      <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+        <dt class="text-base leading-7 text-gray-600">Active Vehicles</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">42</dd>
+      </div>
+      <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+        <dt class="text-base leading-7 text-gray-600">Geofences</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">156</dd>
+      </div>
+      <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+        <dt class="text-base leading-7 text-gray-600">Avg Response Time</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">180s</dd>
+      </div>
+      <div class="mx-auto flex max-w-xs flex-col gap-y-4">
+        <dt class="text-base leading-7 text-gray-600">Uptime</dt>
+        <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">99.9%</dd>
+      </div>
+    </dl>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-blue-600">
+  <div class="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        Ready to launch your fleet operations?
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-blue-200">
+        Experience the power of real-time fleet management with GeoFleetic Phase 3.
+      </p>
+      <div class="mt-10 flex items-center justify-center gap-x-6">
+        <.link navigate={~p"/dashboard/default_fleet"} class="rounded-md bg-white px-6 py-3 text-base font-semibold text-blue-600 shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          🚀 Launch Dashboard
+        </.link>
+        <.link navigate={~p"/alerts/default_fleet"} class="text-base font-semibold leading-6 text-white">
+          View Alerts <span aria-hidden="true">→</span>
+        </.link>
+      </div>
+    </div>
+  </div>
+</div>
