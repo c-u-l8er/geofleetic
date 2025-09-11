@@ -8,6 +8,8 @@ defmodule GeoFleetic.VehicleLocation do
     field :heading, :float
     field :accuracy, :float
 
+    belongs_to :tenant, GeoFleetic.Tenant
+
     timestamps()
   end
 end

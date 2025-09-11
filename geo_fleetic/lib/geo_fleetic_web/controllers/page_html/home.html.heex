@@ -15,12 +15,12 @@
         Real-Time Fleet Management System with Advanced Geofencing, Intelligent Dispatch, and Live Dashboards
       </p>
       <div class="mt-10 flex items-center justify-center gap-x-6">
-        <.link navigate={~p"/dashboard/default_fleet"} class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          🚀 Launch Dashboard
+        <.link navigate={~p"/auth/login"} class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          🔐 Sign In
         </.link>
-        <.link navigate={~p"/fleet/default_fleet"} class="text-base font-semibold leading-6 text-gray-900">
-          View Fleet <span aria-hidden="true">→</span>
-        </.link>
+        <span class="text-base font-semibold leading-6 text-gray-600">
+          Secure multi-tenant fleet management
+        </span>
       </div>
     </div>
   </div>
@@ -57,8 +57,8 @@
           <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
             <p class="flex-auto">Sub-50ms end-to-end latency for location updates with WebSocket streaming and batch processing.</p>
             <p class="mt-6">
-              <.link navigate={~p"/dashboard/default_fleet"} class="text-sm font-semibold leading-6 text-blue-600">
-                View live tracking <span aria-hidden="true">→</span>
+              <.link navigate={~p"/auth/login"} class="text-sm font-semibold leading-6 text-blue-600">
+                Sign in to view <span aria-hidden="true">→</span>
               </.link>
             </p>
           </dd>
@@ -76,8 +76,8 @@
           <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
             <p class="flex-auto">5 types of geofences with hysteresis, dwell time tracking, and predictive breach detection.</p>
             <p class="mt-6">
-              <.link navigate={~p"/dashboard/default_fleet"} class="text-sm font-semibold leading-6 text-green-600">
-                Manage geofences <span aria-hidden="true">→</span>
+              <.link navigate={~p"/auth/login"} class="text-sm font-semibold leading-6 text-green-600">
+                Sign in to manage <span aria-hidden="true">→</span>
               </.link>
             </p>
           </dd>
@@ -95,8 +95,8 @@
           <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
             <p class="flex-auto">AI-powered vehicle assignment with emergency prioritization and real-time route optimization.</p>
             <p class="mt-6">
-              <.link navigate={~p"/dispatch/default_fleet"} class="text-sm font-semibold leading-6 text-purple-600">
-                View dispatch system <span aria-hidden="true">→</span>
+              <.link navigate={~p"/auth/login"} class="text-sm font-semibold leading-6 text-purple-600">
+                Sign in to dispatch <span aria-hidden="true">→</span>
               </.link>
             </p>
           </dd>
@@ -141,12 +141,12 @@
         Experience the power of real-time fleet management with GeoFleetic Phase 3.
       </p>
       <div class="mt-10 flex items-center justify-center gap-x-6">
-        <.link navigate={~p"/dashboard/default_fleet"} class="rounded-md bg-white px-6 py-3 text-base font-semibold text-blue-600 shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-          🚀 Launch Dashboard
+        <.link navigate={~p"/auth/login"} class="rounded-md bg-white px-6 py-3 text-base font-semibold text-blue-600 shadow-sm hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+          🔐 Sign In to Launch
         </.link>
-        <.link navigate={~p"/alerts/default_fleet"} class="text-base font-semibold leading-6 text-white">
-          View Alerts <span aria-hidden="true">→</span>
-        </.link>
+        <span class="text-base font-semibold leading-6 text-blue-200">
+          Multi-tenant fleet management
+        </span>
       </div>
     </div>
   </div>

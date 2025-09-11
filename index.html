@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoFleetic - Revolutionary Geospatial Fleet Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .powered-by {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+        }
+
+        .powered-by a {
+            color: #38b2ac;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .powered-by a:hover {
+            color: #ffffff;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #38b2ac 0%, #4299e1 50%, #9f7aea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.4s forwards;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+
+        .description {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            line-height: 1.6;
+            margin: 0 auto 2em;
+            opacity: 0.8;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #38b2ac, #4299e1, #9f7aea);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(56, 178, 172, 0.1);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #38b2ac;
+        }
+
+        .feature-text {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, #38b2ac 0%, #4299e1 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(56, 178, 172, 0.3);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .tech-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.4s forwards;
+        }
+
+        .tech-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: rgba(56, 178, 172, 0.1);
+            border-color: #38b2ac;
+            color: #38b2ac;
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .floating-cube {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .grid-pattern {
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(56, 178, 172, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 178, 172, 0.5) 1px, transparent 1px);
+            background-size: 10px 10px;
+            backdrop-filter: blur(1px);
+        }
+
+        .floating-cube:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-cube:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-cube:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            .description {
+                font-size: 1.1rem;
+            }
+            .features {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="floating-elements">
+        <div class="floating-cube">
+            <div class="grid-pattern"></div>
+        </div>
+        <div class="floating-cube">
+            <div class="grid-pattern"></div>
+        </div>
+        <div class="floating-cube">
+            <div class="grid-pattern"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <div class="powered-by">
+                Powered by <a href="https://traaviis.com" target="_blank">TRAAVVIIS</a>
+            </div>
+            
+            <h1 class="logo">GeoFleetic</h1>
+            
+            <p class="tagline">The Future of Geospatial Fleet Intelligence</p>
+            
+            <p class="description">
+                Revolutionary AI-powered platform that transforms geospatial intelligence into seamless fleet management and dispatching. 
+                Built on cutting-edge spatial reasoning infrastructure for the distributed ownership based Web3 era of mobility.
+            </p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3 class="feature-title">Spatial Intelligence Core</h3>
+                    <p class="feature-text">
+                        Advanced PostGIS-powered spatial reasoning with real-time geofencing and proximity analytics for intelligent fleet positioning.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛰️</div>
+                    <h3 class="feature-title">Predictive Route Mastery</h3>
+                    <p class="feature-text">
+                        AI-driven route optimization leveraging geospatial foundation models, traffic prediction, and dynamic load balancing.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Real-time Fleet Orchestration</h3>
+                    <p class="feature-text">
+                        Distributed vehicle coordination with precision dispatching, automated rebalancing, and intelligent asset allocation.
+                    </p>
+                </div>
+
+                <a href="https://github.com/c-u-l8er/stellarmorphism" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="feature-card">
+                        <div class="feature-icon">🗄️</div>
+                        <h3 class="feature-title">Stellarmorphism</h3>
+                        <p class="feature-text">
+                            Algebraic data type safe database pattern with PostGIS integration for spatial reasoning and data integrity.
+                        </p>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="cta-section">
+                <a href="#" class="cta-button">Launch Fleet Intelligence</a>
+                
+                <div class="tech-badges">
+                    <span class="tech-badge">Geospatial AI</span>
+                    <span class="tech-badge">Fleet Optimization</span>
+                    <span class="tech-badge">Smart Dispatch</span>
+                    <span class="tech-badge">Web3 Ready</span>
+                    <span class="tech-badge">Real-time Analytics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate random stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Parallax effect for floating elements
+        document.addEventListener('mousemove', (e) => {
+            const cubes = document.querySelectorAll('.floating-cube');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            cubes.forEach((cube, index) => {
+                const speed = (index + 1) * 0.5;
+                cube.style.transform = `translate(${x * speed * 10}px, ${y * speed * 10}px) rotate(${x * speed * 45}deg)`;
+            });
+        });
+
+        // Smooth scroll animation for CTA
+        document.querySelector('.cta-button').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Add your fleet intelligence access logic here
+            alert('GeoFleetic Fleet Intelligence coming soon! 🗺️');
+        });
+
+        // Initialize stars
+        createStars();
+        
+        // Add scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.hero > *').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

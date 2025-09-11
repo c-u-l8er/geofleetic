@@ -14,7 +14,7 @@ defmodule GeoFleeticWeb.DashboardLive do
   use Stellarmorphism
 
   @impl true
-  def mount(%{"fleet_id" => fleet_id}, _session, socket) do
+  def mount(%{"fleet_id" => fleet_id}, session, socket) do
     if connected?(socket) do
       # Subscribe to real-time updates
       Phoenix.PubSub.subscribe(GeoFleetic.PubSub, "fleet_events:#{fleet_id}")
@@ -23,6 +23,10 @@ defmodule GeoFleeticWeb.DashboardLive do
       # Set up periodic metrics updates
       :timer.send_interval(5000, :update_metrics)
     end
+
+    # Get current tenant info
+    tenant_id = session["tenant_id"]
+    tenant = GeoFleetic.Repo.get!(GeoFleetic.Tenant, tenant_id)
 
     # Load initial dashboard state using stellar types
     initial_state = core DashboardState,
@@ -41,7 +45,7 @@ defmodule GeoFleeticWeb.DashboardLive do
       "route_deviation" => 1
     }}
 
-    {:ok, assign(socket, dashboard_state: initial_state, current_view: :index)}
+    {:ok, assign(socket, dashboard_state: initial_state, current_view: :index, current_tenant: tenant)}
   end
 
   @impl true
@@ -155,8 +159,8 @@ defmodule GeoFleeticWeb.DashboardLive do
 
   @impl true
   def render(assigns) do
-    vehicles_json = Jason.encode!(assigns.dashboard_state.active_vehicles)
-    geofences_json = Jason.encode!(load_geofence_boundaries(assigns.dashboard_state.fleet_id))
+    _vehicles_json = Jason.encode!(assigns.dashboard_state.active_vehicles)
+    _geofences_json = Jason.encode!(load_geofence_boundaries(assigns.dashboard_state.fleet_id))
 
     ~H"""
     <!-- Include Leaflet CSS and JS -->
@@ -166,21 +170,42 @@ defmodule GeoFleeticWeb.DashboardLive do
     <div class="min-h-screen bg-gray-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-900">
-            <%= get_page_title(@current_view) %>
-          </h1>
-          <p class="mt-2 text-sm text-gray-600">
-            <%= get_page_description(@current_view) %>
-          </p>
+          <div class="flex justify-between items-start">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900">
+                <%= get_page_title(@current_view) %>
+              </h1>
+              <p class="mt-2 text-sm text-gray-600">
+                <%= get_page_description(@current_view) %>
+              </p>
+            </div>
+            <div class="text-right">
+              <div class="text-sm text-gray-600 mb-1">Current Organization</div>
+              <div class="text-lg font-medium text-gray-900"><%= @current_tenant.name %></div>
+            </div>
+          </div>
 
           <!-- Navigation -->
           <nav class="mt-6">
-            <div class="flex space-x-4">
-              <%= live_patch "Dashboard", to: "/dashboard/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :index, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
-              <%= live_patch "Fleet", to: "/fleet/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :fleet, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
-              <%= live_patch "Map", to: "/map/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :map, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
-              <%= live_patch "Alerts", to: "/alerts/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :alerts, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
-              <%= live_patch "Dispatch", to: "/dispatch/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :dispatch, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+            <div class="flex justify-between items-center">
+              <div class="flex space-x-4">
+                <%= live_patch "Dashboard", to: "/#{@current_tenant.id}/dashboard/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :index, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+                <%= live_patch "Fleet", to: "/#{@current_tenant.id}/fleet/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :fleet, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+                <%= live_patch "Map", to: "/#{@current_tenant.id}/map/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :map, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+                <%= live_patch "Alerts", to: "/#{@current_tenant.id}/alerts/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :alerts, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+                <%= live_patch "Dispatch", to: "/#{@current_tenant.id}/dispatch/#{@dashboard_state.fleet_id}", class: "px-3 py-2 rounded-md text-sm font-medium #{if @current_view == :dispatch, do: "bg-blue-100 text-blue-700", else: "text-gray-500 hover:text-gray-700"}" %>
+              </div>
+              <div class="flex items-center space-x-4">
+                <a href="/organizations/manage" class="px-3 py-2 rounded-md text-sm font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50">
+                  Manage Organizations
+                </a>
+                <a href="https://pro-mole-57.accounts.dev/user" target="_blank" class="px-3 py-2 rounded-md text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50">
+                  Account
+                </a>
+                <a href="https://pro-mole-57.accounts.dev/organization" target="_blank" class="px-3 py-2 rounded-md text-sm font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50">
+                  Clerk Org
+                </a>
+              </div>
             </div>
           </nav>
         </div>

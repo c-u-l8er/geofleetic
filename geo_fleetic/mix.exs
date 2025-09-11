@@ -60,7 +60,10 @@ defmodule GeoFleetic.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       # Stellarmorphism for type-safe fleet operations
-      {:stellarmorphism, "~> 1.0.0"}
+      {:stellarmorphism, "~> 1.0.0"},
+      # HTTP client for Clerk API
+      {:tesla, "~> 1.4"},
+      {:jason, "~> 1.4"}
     ]
   end
 

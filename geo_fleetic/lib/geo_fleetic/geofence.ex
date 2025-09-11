@@ -17,6 +17,8 @@ defmodule GeoFleetic.Geofence do
     field :confidence_threshold, :float, default: 0.8
     field :trigger_conditions, :map
 
+    belongs_to :tenant, GeoFleetic.Tenant
+
     timestamps()
   end
 

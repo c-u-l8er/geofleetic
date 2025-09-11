@@ -1,0 +1,32 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Select Organization
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Choose the organization you want to access
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      <%= for tenant <- @tenants do %>
+        <.link
+          href={~p"/auth/tenant/#{tenant.id}"}
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          <%= tenant.name %>
+        </.link>
+      <% end %>
+    </div>
+
+    <div class="text-center">
+      <.link
+        href={~p"/auth/logout"}
+        class="text-sm text-gray-600 hover:text-gray-900"
+      >
+        Sign out
+      </.link>
+    </div>
+  </div>
+</div>
