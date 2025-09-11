@@ -75,7 +75,7 @@
         }
 
         .powered-by a {
-            color: #38b2ac;
+            color: #00d4ff;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
@@ -89,7 +89,7 @@
             font-size: 4rem;
             font-weight: 900;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #38b2ac 0%, #4299e1 50%, #9f7aea 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -144,7 +144,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, #38b2ac, #4299e1, #9f7aea);
+            background: linear-gradient(90deg, #00d4ff, #7c3aed, #ec4899);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -152,7 +152,7 @@
         .feature-card:hover {
             transform: translateY(-10px);
             border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(56, 178, 172, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.1);
         }
 
         .feature-card:hover::before {
@@ -169,7 +169,7 @@
             font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            color: #38b2ac;
+            color: #00d4ff;
         }
 
         .feature-text {
@@ -185,7 +185,7 @@
         .cta-button {
             display: inline-block;
             padding: 1.2rem 3rem;
-            background: linear-gradient(135deg, #38b2ac 0%, #4299e1 100%);
+            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
             color: white;
             text-decoration: none;
             border-radius: 50px;
@@ -209,7 +209,7 @@
 
         .cta-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(56, 178, 172, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
         }
 
         .cta-button:hover::before {
@@ -238,9 +238,9 @@
         }
 
         .tech-badge:hover {
-            background: rgba(56, 178, 172, 0.1);
-            border-color: #38b2ac;
-            color: #38b2ac;
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            color: #00d4ff;
         }
 
         .floating-elements {
@@ -255,9 +255,9 @@
 
         .floating-cube {
             position: absolute;
-            width: 80px;
-            height: 80px;
-            opacity: 0.3;
+            width: 100px;
+            height: 100px;
+            opacity: 0.6;
             animation: float 6s ease-in-out infinite;
         }
 
@@ -265,10 +265,15 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(56, 178, 172, 0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 178, 172, 0.5) 1px, transparent 1px);
-            background-size: 10px 10px;
+                linear-gradient(rgba(0, 212, 255, 0.8) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.7) 2px, transparent 2px),
+                linear-gradient(45deg, rgba(236, 72, 153, 0.6) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(0, 212, 255, 0.5) 1px, transparent 1px);
+            background-size: 12px 12px, 12px 12px, 8px 8px, 8px 8px;
             backdrop-filter: blur(1px);
+            border: 2px solid;
+            border-image: linear-gradient(45deg, #00d4ff, #7c3aed, #ec4899) 1;
+            border-radius: 8px;
         }
 
         .floating-cube:nth-child(1) {
@@ -318,6 +323,10 @@
             .features {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
+            }
+            .floating-cube {
+                width: 80px;
+                height: 80px;
             }
         }
     </style>
@@ -449,7 +458,7 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
+                    entry.target.animationPlayState = 'running';
                 }
             });
         }, observerOptions);
