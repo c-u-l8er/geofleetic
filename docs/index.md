@@ -2,6 +2,8 @@
 
 > **The fleet that learns where. Spatial digital twins, federated route learning, and GNN optimization for geo-distributed intelligence.**
 
+> **Part of the [&] Protocol stack** · [Ecosystem overview](../../ECOSYSTEM.md) · [Three-protocol stack](../../PULSE/docs/THREE_PROTOCOL_STACK.md) · [Stack status](../../STACK_COMPLETION.md)
+
 Welcome to the documentation hub for **GeoFleetic** — the spatial intelligence
 layer of the [&] Protocol ecosystem. GeoFleetic provides geo-distributed fleet
 tracking, federated route learning, and GNN-based route optimization — all running
