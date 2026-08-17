@@ -1,0 +1,46 @@
+{
+  "$schema": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/capability-contract.schema.json",
+  "capability": "&space.fleet",
+  "provider": "geofleetic",
+  "version": "0.1.0",
+  "description": "Spatial fleet-state contract for regional asset lookup, route-aware enrichment, and capacity snapshots.",
+  "operations": {
+    "locate": {
+      "in": "asset_query",
+      "out": "location_set",
+      "description": "Resolve current fleet or asset locations from an asset query."
+    },
+    "enrich": {
+      "in": "context",
+      "out": "spatial_context",
+      "description": "Attach fleet, region, or topology context to an upstream artifact."
+    },
+    "capacity": {
+      "in": "region_query",
+      "out": "capacity_snapshot",
+      "description": "Return region- or fleet-level capacity state for planning and routing."
+    },
+    "route": {
+      "in": "route_request",
+      "out": "route_plan",
+      "description": "Produce a fleet-aware route recommendation under current spatial constraints."
+    }
+  },
+  "accepts_from": ["&memory.*", "&time.*", "raw_data", "context"],
+  "feeds_into": ["&reason.*", "&memory.*", "output"],
+  "a2a_skills": [
+    "fleet-state-enrichment",
+    "regional-capacity-lookup",
+    "route-feasibility-evaluation"
+  ],
+  "metadata": {
+    "primitive": "space",
+    "subtype": "fleet",
+    "transport": "mcp_v1",
+    "examples": [
+      "Locate affected vehicles after a regional anomaly",
+      "Enrich incident context with current regional capacity",
+      "Generate route recommendations for constrained fleet operations"
+    ]
+  }
+}

@@ -1,0 +1,226 @@
+/* ==========================================================================
+   The ComputeDriven page shell, revision shell-r9, on geofleetic.com.
+
+   Everything between TOKENS-START and TOKENS-END is this site's own character
+   and is the only part a sibling surface replaces. Everything after
+   TOKENS-END is shared structure. Documented in ProjectAmp2/agents/SHELL.md.
+   ========================================================================== */
+/* TOKENS-START — GeoFleetic: azimuth blue on a cold survey ink */
+:root{
+--ink:#05080e;--ink2:#0a0e16;--ink3:#111622;          /* page · surface · raised */
+--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.14);
+/* fg2 .66 measures 7.0:1 on the lightest surface, fg3 .55 measures 5.4:1.
+   The shell shipped .34 for a while, which is 2.78:1 — a caveat nobody can
+   read is not a caveat. launch-gate.mjs recomputes every pair and refuses
+   below 4.5:1, so these cannot drift back. SHELL.md §0. */
+--fg:#e7ecf5;--fg2:rgba(231,236,245,.66);--fg3:rgba(231,236,245,.55);
+/* The accent is a bearing line on a chart. Deliberately clear of --data
+   (teal, and the only colour allowed to mean "this number has a witness"),
+   of --warn, and of the five rung-chip hues, which are role colours. It is
+   the nearest neighbour in the portfolio to agentelic's #3d8bfd, 11 degrees
+   of hue away and lighter; noted in the lane report rather than hidden. */
+--acc:#6b8cff;--acc-soft:rgba(107,140,255,.1);--acc-line:rgba(107,140,255,.34);
+--acc-ink:#00040f;   /* the ink a .btn paints ON the accent — see r7 below */
+--data:#5ad1c8;--data-soft:rgba(90,209,200,.1);--warn:#f5c451;
+--display:"Fraunces",Georgia,"Times New Roman",serif;
+--ui:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+--mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+--r:10px;--rl:16px
+}
+/* TOKENS-END */
+
+:root{--wrap:1080px;--xs:.6875rem;--sm:.8125rem;--md:1.0625rem;--lg:1.25rem;
+--h2:clamp(1.7rem,4vw,2.5rem);--h1:clamp(2.1rem,5.6vw,3.6rem)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--fg);font:.9375rem/1.62 var(--ui);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--acc)}
+h1,h2,h3{margin:0}
+img,canvas,svg{max-width:100%}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+
+/* --- placement band ---
+   geofleetic is amp-nav place:3, and amp-nav's own renderPlacement() emits
+   "a specification in the ComputeDriven world" plus a spec link for place 3 —
+   the layer sentence belongs to place 2 and attribution-only to place 4.
+   Three variants, not two. The band therefore claims no layer.
+   .covers is 11px and load-bearing — it is the span that keeps the rung chip
+   honest — so it takes --fg2, not --fg3. SHELL.md §0, §1. */
+.band{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:11px 22px;background:var(--ink2);border-bottom:1px solid var(--line);font-size:var(--xs)}
+.band .where{color:var(--fg2);text-transform:uppercase;letter-spacing:.05em}
+.band .where b{color:var(--fg);font-weight:600}
+.band .covers{color:var(--fg2);flex:1 1 300px;min-width:0}
+.band .specref{color:var(--acc);text-decoration:none;white-space:nowrap;border-bottom:1px solid transparent}
+.band .specref:hover{border-bottom-color:var(--acc-line)}
+.rung{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:var(--xs);padding:2px 9px;border-radius:999px;border:1px solid var(--line2);color:var(--fg2);white-space:nowrap}
+.rung::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.rung[data-rung=spec]{color:#9aa4b2;border-color:rgba(154,164,178,.35)}
+.rung[data-rung=in_tree]{color:#7aa2f7;border-color:rgba(122,162,247,.35)}
+.rung[data-rung=live_local]{color:var(--data);border-color:rgba(90,209,200,.4);background:var(--data-soft)}
+.rung[data-rung=live_deployed]{color:#4ade80;border-color:rgba(74,222,128,.4)}
+.rung[data-rung=external]{color:#c4a1ff;border-color:rgba(196,161,255,.4)}
+.rung[data-rung="?"]{color:var(--warn);border-color:rgba(245,196,81,.45);border-style:dashed}
+
+/* --- nav ---
+   SHELL.md r7: `.top nav a` has specificity 0,2,1 and `.btn` has 0,1,0, so an
+   unqualified nav rule REPAINTS a button inside the nav in --fg2 on --acc and
+   the header call to action ships unreadable. That shipped on all nine
+   surfaces built before this one. The `:not(.btn)` is the fix, and
+   launch-gate.mjs resolves the cascade over the emitted artifact rather than
+   trusting this comment. */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.logo{font-family:var(--mono);font-size:var(--md);font-weight:600;letter-spacing:-.05em;color:var(--fg);text-decoration:none;white-space:nowrap}
+.logo span{color:var(--acc)}
+.logo:hover{color:var(--acc)}
+.top nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.top nav a:not(.btn){color:var(--fg2);text-decoration:none;font-size:var(--sm);font-weight:500;white-space:nowrap}
+.top nav a:not(.btn):hover{color:var(--acc)}
+.btn{display:inline-block;background:var(--acc);color:var(--acc-ink);font-weight:700;border-radius:var(--r);padding:11px 20px;text-decoration:none;font-size:var(--sm);border:1px solid var(--acc)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line2);font-weight:500}
+.btn:hover{filter:brightness(1.12)}
+/* SHELL.md r6: the stacking breakpoint belongs to the surface, not the shell.
+   MEASURED on this nav, not copied: five items plus a button still put the
+   logo alongside a two-row nav at 780px and it is clean by 815px. Recorded in
+   records/surface.json as nav_stack_px. */
+@media(max-width:800px){.top{flex-direction:column;align-items:flex-start;gap:11px}.top nav{width:100%}}
+
+/* --- hero + the identifying animation (SHELL.md §8) ---
+   Travis, 2026-08-17: the animation must be ABOVE THE FOLD, in frame without
+   scrolling. So it is a laid-out panel with real height in the hero grid, not
+   a decoration bled behind the text: at 900px and up it is the right column
+   and both hero rows sit beside it; below that it is a band directly under
+   the h1, which keeps it in the first screenful on a phone. The h1 always
+   comes first in source order — the question comes first. */
+.hero{display:grid;gap:20px 34px;grid-template-areas:"head" "anim" "body";padding:44px 0 52px}
+.hero .head{grid-area:head}
+.hero .body{grid-area:body}
+.idanim{grid-area:anim;position:relative;border:1px solid var(--line);border-radius:var(--rl);background:var(--ink2);overflow:hidden;min-height:212px}
+.idanim canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
+@media(min-width:900px){.hero{grid-template-columns:minmax(0,1.04fr) minmax(310px,.96fr);grid-template-areas:"head anim" "body anim";align-items:start}
+.idanim{min-height:352px;height:100%}}
+/* Measured at 390x844, which is the phone this has to survive: the band, the
+   stacked nav and a four-line h1 put the animation panel at 630px and its
+   base at 842px — inside the viewport by two pixels, which is not "above the
+   fold", it is luck. Tightening the hero here lifts it to ~500px. */
+@media(max-width:899px){.hero{padding:24px 0 40px;gap:16px}}
+@media(max-width:800px){.top{padding:12px 0}.top nav{gap:11px 16px}.band{padding:10px 18px;gap:6px 13px}}
+
+/* --- sections --- */
+section{padding:54px 0;border-top:1px solid var(--line)}
+.hero{border-top:0}
+.eyebrow{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:.14em;color:var(--acc);display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.eyebrow::before{content:"";width:20px;height:1px;background:var(--acc);opacity:.6;flex:none}
+h1{font-family:var(--display);font-weight:500;font-size:var(--h1);line-height:1.14;letter-spacing:-.015em;max-width:15ch;text-wrap:balance}
+h1 em{font-style:italic;color:var(--acc)}
+h2{font-family:var(--display);font-weight:500;font-size:var(--h2);line-height:1.18;letter-spacing:-.01em;text-wrap:balance}
+h3{font-size:var(--md);font-weight:600}
+.lede{color:var(--fg2);font-size:var(--md);line-height:1.68;max-width:62ch;margin:0}
+p{margin:14px 0 0}
+.hero .body p:first-child{margin-top:0}
+strong{color:var(--fg);font-weight:600}
+
+/* --- cards ---
+   Separators are each cell's own 1px shadow filling the grid gap, NOT a
+   container background showing through: the background trick leaves a phantom
+   lit rectangle whenever the last row is short. SHELL.md §6. */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--ink2);border:1px solid var(--line);border-radius:var(--rl);overflow:hidden;margin-top:28px}
+.grid>div{background:var(--ink2);padding:22px;min-width:0;box-shadow:0 0 0 1px var(--line)}
+.grid h3{margin-bottom:8px}
+.grid p{margin:0;color:var(--fg2);font-size:var(--sm);line-height:1.62}
+.grid .head{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+.grid .head h3{margin:0}
+.needs{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line2);font-family:var(--mono);font-size:var(--xs);color:var(--fg3);line-height:1.6;overflow-wrap:anywhere}
+.needs b{color:var(--fg2);font-weight:500}
+.where-tag{font-family:var(--mono);font-size:var(--xs);color:var(--data);white-space:nowrap}
+
+/* --- count plate --- */
+.plate{grid-template-columns:repeat(auto-fit,minmax(168px,1fr))}
+.plate>div{text-align:center;padding:22px 12px}
+.plate .n{font-family:var(--mono);font-weight:600;font-size:1.5rem;color:var(--data)}
+.plate .l{font-size:var(--xs);letter-spacing:.1em;text-transform:uppercase;color:var(--fg2);margin-top:5px}
+.sm{font-size:var(--sm)}
+.mt{margin-top:38px}
+
+/* --- status block --- */
+.status{border:1px solid var(--line2);border-radius:var(--rl);background:var(--ink2);overflow:hidden;margin-top:26px}
+.status>div{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:15px 20px;border-top:1px solid var(--line);min-width:0}
+.status>div:first-child{border-top:0}
+.status dt{font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;color:var(--fg2);margin:0}
+.status dd{margin:0;font-size:var(--sm);color:var(--fg2);line-height:1.6;min-width:0;overflow-wrap:anywhere}
+.status dd strong{color:var(--fg);font-weight:600}
+.status .limit{background:rgba(245,196,81,.05)}
+.status .limit dt{color:var(--warn)}
+
+/* --- evidence table ---
+   Wide content scrolls in its own box, never the document. SHELL.md §6. */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--ink2);margin-top:22px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-family:var(--mono);font-size:var(--xs)}
+th,td{text-align:left;padding:10px 15px;border-top:1px solid var(--line);white-space:nowrap}
+th{color:var(--fg2);text-transform:uppercase;letter-spacing:.09em;font-weight:500;background:var(--ink3);border-top:0}
+td.place{white-space:normal;font-family:var(--ui);color:var(--fg);min-width:200px}
+td.num{color:var(--data);text-align:right}
+td.note{white-space:normal;color:var(--fg2);min-width:220px}
+
+/* --- geofleetic's own figure: the three contracts and their operations ---
+   Static markup generated from the contract files. It is a diagram of a
+   declaration, not a rendering of any fleet, and there is no fleet. */
+.rel{margin-top:24px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(288px,1fr))}
+.rel>div{border:1px solid var(--line);border-radius:var(--rl);background:var(--ink2);padding:20px;min-width:0}
+.rel .cap{font-family:var(--mono);font-size:var(--sm);color:var(--acc);font-weight:600;letter-spacing:-.01em}
+.rel .blurb{font-size:var(--sm);color:var(--fg2);margin:8px 0 14px;line-height:1.55}
+.rel ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.rel li{font-family:var(--mono);font-size:var(--xs);color:var(--fg2);display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;min-width:0}
+.rel li b{color:var(--fg);font-weight:600}
+.rel .io{color:var(--data);overflow-wrap:anywhere}
+.rel .to{color:var(--fg3)}
+
+/* --- claim tag + retraction --- */
+.tag{display:inline-block;font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:.06em;color:var(--warn);background:rgba(245,196,81,.06);border:1px dashed rgba(245,196,81,.35);border-radius:6px;padding:5px 11px;margin-bottom:16px}
+.tag.ok{color:var(--data);border-color:rgba(90,209,200,.35);background:var(--data-soft)}
+.retract{border-left:3px solid var(--warn);background:rgba(245,196,81,.05);border-radius:0 var(--r) var(--r) 0;padding:20px;max-width:74ch;margin-top:26px}
+.retract h3{color:var(--warn);font-size:.9375rem}
+.retract p{font-size:var(--sm);color:var(--fg2);line-height:1.7}
+code{font-family:var(--mono);font-size:.92em;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+
+/* --- CTA, keyed to rung --- */
+.cta{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.cta a{display:block;background:var(--ink2);border:1px solid var(--line);border-radius:var(--r);padding:20px;text-decoration:none;transition:border-color .2s,background .2s,transform .2s;min-width:0}
+.cta a:hover{border-color:var(--acc-line);background:var(--acc-soft);transform:translateY(-2px)}
+.cta .verb{display:block;font-family:var(--mono);font-size:var(--xs);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--acc);margin-bottom:7px}
+.cta .what{display:block;font-size:var(--sm);line-height:1.55;color:var(--fg2)}
+.cta code{color:var(--data);background:none;padding:0}
+.ctagroup+.ctagroup{margin-top:34px}
+
+/* --- the correction form (SHELL.md r9) ---
+   A real form with an action, so it works with scripting off; /say.js only
+   upgrades it to an inline reply and prints "sent" on a 2xx and never before.
+   No mailto: anywhere, and launch-gate.mjs refuses one. */
+.say{margin-top:24px;border:1px solid var(--line);border-radius:var(--rl);background:var(--ink2);padding:22px}
+.say-row{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.say-f{display:block;min-width:0}
+.say-f span{display:block;font-family:var(--mono);font-size:var(--xs);text-transform:uppercase;letter-spacing:.1em;color:var(--fg2);margin-bottom:7px}
+.say-f input,.say-f textarea{width:100%;background:var(--ink);color:var(--fg);border:1px solid var(--line2);border-radius:var(--r);padding:11px 13px;font:inherit;font-size:var(--sm);min-width:0}
+.say-f textarea{resize:vertical;line-height:1.55}
+.say-f input::placeholder,.say-f textarea::placeholder{color:var(--fg3)}
+.say-f input:hover,.say-f textarea:hover{border-color:var(--acc-line)}
+.say input[name="_gotcha"]{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.say-act{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:16px}
+.say-msg{margin:0;font-size:var(--sm);color:var(--fg2);min-width:0}
+.say-msg.ok{color:var(--data)}
+.say-msg.bad{color:var(--warn)}
+.say button{background:var(--acc);color:var(--acc-ink);font-weight:700;border:1px solid var(--acc);border-radius:var(--r);padding:11px 22px;font:inherit;font-size:var(--sm);font-weight:700;cursor:pointer}
+.say button:hover{filter:brightness(1.12)}
+.say button[disabled]{opacity:.55;cursor:default}
+
+/* --- footer --- */
+footer{border-top:1px solid var(--line);background:var(--ink2);margin-top:54px}
+footer .in{max-width:var(--wrap);margin:0 auto;padding:26px 22px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;font-size:var(--xs);color:var(--fg2)}
+footer a{color:var(--fg2);text-decoration:none}
+footer a:hover{color:var(--acc)}
+footer .links{display:flex;flex-wrap:wrap;gap:20px}
+.stamp{font-family:var(--mono);color:var(--fg2)}
+.attrib{max-width:var(--wrap);margin:0 auto;padding:0 22px 26px;font-size:var(--xs);color:var(--fg2);line-height:1.65}
+
+@media(max-width:640px){.status>div{grid-template-columns:1fr;gap:6px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}

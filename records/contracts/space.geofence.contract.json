@@ -1,0 +1,43 @@
+{
+  "$schema": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/capability-contract.schema.json",
+  "capability": "&space.geofence",
+  "provider": "geofleetic",
+  "version": "0.1.0",
+  "description": "Geofence-aware spatial contract for boundary membership checks, enter/exit event detection, and compliance-oriented context enrichment.",
+  "operations": {
+    "contains": {
+      "in": "location_set",
+      "out": "geofence_membership",
+      "description": "Evaluate whether one or more locations fall within declared geofence boundaries."
+    },
+    "enter_exit": {
+      "in": "trajectory_set",
+      "out": "boundary_events",
+      "description": "Detect enter, exit, and dwell transitions for tracked assets crossing geofence boundaries."
+    },
+    "enrich": {
+      "in": "context",
+      "out": "spatial_context",
+      "description": "Attach geofence, service-area, or compliance-boundary context to an upstream artifact."
+    }
+  },
+  "accepts_from": [
+    "&memory.*",
+    "&time.*",
+    "context",
+    "location_set",
+    "trajectory_set"
+  ],
+  "feeds_into": ["&reason.*", "&memory.*", "output"],
+  "a2a_skills": ["geofence-membership-evaluation", "boundary-alerting"],
+  "metadata": {
+    "primitive": "space",
+    "subtype": "geofence",
+    "transport": "mcp_v1",
+    "examples": [
+      "Check whether service vehicles are inside restricted zones",
+      "Detect facility enter and exit events for monitored assets",
+      "Enrich incident context with boundary and service-area compliance data"
+    ]
+  }
+}

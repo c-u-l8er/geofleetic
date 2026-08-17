@@ -1,0 +1,50 @@
+{
+  "$schema": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/capability-contract.schema.json",
+  "capability": "&space.route",
+  "provider": "geofleetic",
+  "version": "0.1.0",
+  "description": "Route intelligence contract for path generation, optimization, and explainable navigation decisions under spatial and operational constraints.",
+  "operations": {
+    "route": {
+      "in": "route_request",
+      "out": "route_plan",
+      "description": "Generate a feasible route plan from an origin, destination, and operating constraints.",
+      "deterministic": false,
+      "side_effects": false
+    },
+    "optimize": {
+      "in": "route_plan",
+      "out": "optimized_route",
+      "description": "Improve an existing route plan for efficiency, cost, or service-level objectives.",
+      "deterministic": false,
+      "side_effects": false
+    },
+    "explain": {
+      "in": "route_plan",
+      "out": "route_explanation",
+      "description": "Explain route selection, tradeoffs, and constraint impacts for auditing and operator review.",
+      "deterministic": false,
+      "side_effects": false
+    }
+  },
+  "accepts_from": [
+    "&memory.*",
+    "&time.*",
+    "&space.*",
+    "context",
+    "route_request",
+    "raw_data"
+  ],
+  "feeds_into": ["&reason.*", "&memory.*", "&space.*", "output"],
+  "a2a_skills": ["route-generation", "route-optimization"],
+  "metadata": {
+    "primitive": "space",
+    "subtype": "route",
+    "transport": "mcp_v1",
+    "examples": [
+      "Generate a delivery route under active regional constraints",
+      "Optimize a planned route for cost and travel time",
+      "Explain why a route changed after updated temporal forecasts"
+    ]
+  }
+}

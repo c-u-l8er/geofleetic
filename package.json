@@ -1,0 +1,13 @@
+{
+  "name": "geofleetic.com",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "geofleetic.com — the landing page for the GeoFleetic v0.1 draft specification. The page is generated from records/ and from the specification itself; launch-gate.mjs reads the emitted artifact and refuses to publish it when the two disagree.",
+  "scripts": {
+    "build": "node build-site.mjs",
+    "gate": "node launch-gate.mjs",
+    "test:launch": "node build-site.mjs && node launch-gate.mjs"
+  },
+  "license": "MIT"
+}

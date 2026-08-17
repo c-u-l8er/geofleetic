@@ -1,0 +1,62 @@
+{
+  "schema": "geofleetic-spec-facts-v1",
+  "_comment": "Frozen by build-site.mjs on first run. Every value here is re-derived from docs/spec/README.md and records/contracts/ on every subsequent build, and the build refuses on any disagreement. Do not hand-edit: if the specification changes, that is a spec event and the record moves with a human looking at it.",
+  "source": "docs/spec/README.md",
+  "frozen_at": "2026-08-17",
+  "facts": {
+    "spec_lines": 987,
+    "spec_bytes": 54209,
+    "headings": 50,
+    "sections": 17,
+    "duplicate_section_numbers": [
+      "10.1"
+    ],
+    "boxes_unticked": 54,
+    "boxes_ticked": 0,
+    "feasibility_ids": [
+      "FV-1",
+      "FV-2",
+      "FV-3",
+      "FV-4"
+    ],
+    "acceptance_criteria": 13,
+    "roadmap_phases": [
+      "Pre-Phase",
+      "Phase 0",
+      "Phase 1",
+      "Phase 2",
+      "Phase 3",
+      "Phase 4",
+      "Phase 5"
+    ],
+    "mcp_tools": [],
+    "rfc_keywords": 0,
+    "feasibility_claimed_word": "three",
+    "contract_operations": 10,
+    "contract_files": 3,
+    "pulse_loop_id": "geofleetic.spatial_intelligence",
+    "pulse_phases": [
+      {
+        "id": "retrieve_twin",
+        "kind": "retrieve"
+      },
+      {
+        "id": "route_inference",
+        "kind": "route"
+      },
+      {
+        "id": "act_dispatch",
+        "kind": "act"
+      },
+      {
+        "id": "learn_outcome",
+        "kind": "learn"
+      },
+      {
+        "id": "consolidate_twin",
+        "kind": "consolidate"
+      }
+    ],
+    "implementation_lines": 0
+  }
+}

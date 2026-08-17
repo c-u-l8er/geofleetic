@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can a fleet learn where without anyone collecting where? — GeoFleetic</title>
+<meta name="description" content="GeoFleetic is a draft specification for geo-distributed fleet intelligence: spatial digital twins as delta-CRDTs, federated route learning, GNN optimization. Nothing is built. This page publishes what the document actually contains, recounted from the file at build time, and what it would take to make one line of it true.">
+<meta name="falsifiable-question" content="{{QUESTION}}">
+<link rel="canonical" href="{{ORIGIN}}/">
+<meta name="theme-color" content="#05080e">
+<meta property="og:title" content="Can a fleet learn where without anyone collecting where? — GeoFleetic">
+<meta property="og:description" content="A specification in the ComputeDriven world. Spatial digital twins, federated route learning, three capability contracts — and no implementation. What is checked is published with its witness; what is not is listed as not.">
+<meta property="og:type" content="website"><meta property="og:url" content="{{ORIGIN}}/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>{{CSS}}</style></head><body>
+{{BAND}}
+<div class="wrap">
+
+<div class="top"><a class="logo" href="/">geo<span>fleetic</span></a>
+<nav><a href="#declares">What it declares</a><a href="#open">What is missing</a><a href="#evidence">Evidence</a><a href="#status">Status</a><a href="{{SPEC_URL}}">Read the spec &uarr;</a><a class="btn" href="#say">Send a correction</a></nav></div>
+
+<section class="hero">
+<div class="head">
+<div class="eyebrow">The question this site exists to answer</div>
+<h1>Can a fleet learn <em>where</em> without anyone collecting where?</h1>
+</div>
+<!-- The identifying animation (SHELL.md §8). It comes AFTER the h1 in source
+     order, because the question comes first, and it is a laid-out panel with
+     real height rather than a wash behind the text so that it is in frame
+     without scrolling at every width. It renders no data and asserts nothing:
+     /fences.js takes no input from this document and writes nothing back into
+     it. Delete both script tags at the bottom of this file and every word,
+     figure, chip, row and form on this page still works. -->
+<div class="idanim" aria-hidden="true"><canvas data-identity-animation></canvas></div>
+<div class="body">
+<p class="lede">That is the bet the whole document makes: each vehicle trains on its own routes and shares only a low-rank adapter delta, so the fleet gets better at a city nobody ever uploaded. <strong>It is a bet, not a result.</strong> There is no GeoFleetic — no process, no server, no vehicle, not one line of Elixir. What exists is a specification, three capability contracts, and this page, which recounts the document from the file every time it is built and refuses to publish if the two disagree.</p>
+<p><a class="btn" href="{{SPEC_URL}}">Read the specification</a>&nbsp;&nbsp;<a class="btn ghost" href="#open">See what is missing</a></p>
+</div>
+</section>
+
+{{PLATE}}
+
+<section id="declares">
+<div class="eyebrow">What the document actually declares</div>
+<h2>Three capabilities and ten operations. Every one of them is a promise about a call that cannot be made yet.</h2>
+<p class="lede">A [&amp;] capability contract names operations with typed inputs and outputs, and says which primitives may feed it and which it may feed. The three below are declared twice &mdash; once as tables in §8 of the specification and once as JSON beside this page &mdash; and two hand-maintained copies of one list drift. So this build compares them, in both directions, and refuses to emit anything if they differ.</p>
+{{REL}}
+<p class="lede sm mt">{{PULSE_LINE}}</p>
+</section>
+
+<section id="open">
+<div class="eyebrow">What is not built, which is all of it</div>
+<h2>The specification opens with the four experiments that would tell you whether any of this works. None has been run.</h2>
+<p class="lede">§14 puts a Pre-Phase in front of the roadmap, and its argument is sound: the delta-CRDT convergence, the federated aggregation and the graph network are the assumptions everything else rests on, and they are cheap to falsify before a 34-week plan is committed to. <strong>The Pre-Phase has not started.</strong> Its own introductory sentence says three highest-risk assumptions and then lists four, which is the kind of thing that survives in a document nobody has had to execute.</p>
+{{OPEN_CARDS}}
+</section>
+
+<section id="evidence">
+<div class="eyebrow">Evidence, recounted at build time</div>
+<h2>Every figure below was read out of the specification during this build, not typed onto this page.</h2>
+<p class="lede">There is no software here to measure, so the only honest evidence is about the document itself: how large it is, how much of it is unticked, and whether the parts that are stated twice agree. <strong>A number cannot be hand-written onto this site</strong> &mdash; the build recomputes each one from the file and the publication gate refuses the artifact when a value on the page and a value in the record disagree.</p>
+{{FACTS_TABLE}}
+<p class="lede sm">{{METHOD_NOTE}}</p>
+</section>
+
+<section id="status">
+<div class="eyebrow">Status</div>
+<h2>Where this stands, and the one thing that would move it.</h2>
+{{STATUS}}
+{{ZEROS}}
+{{RETRACTION}}
+</section>
+
+<section id="do">
+<div class="eyebrow">What you can actually do here</div>
+<h2>One rung, one list. Nothing on this page asks you to use something that does not exist.</h2>
+<p class="lede">This surface is at the <code>spec</code> rung, and the rung decides the verbs: read it, argue with it, or build it. There is no &ldquo;try it&rdquo; because there is nothing to try, and a page that cannot honour its own call to action is worse than a page with none &mdash; the visitor finds out after spending the effort.</p>
+{{CTA}}
+</section>
+
+<section id="say">
+<div class="eyebrow">Corrections</div>
+<h2>Tell us where this specification is wrong.</h2>
+<p class="lede">A specification with no implementation has exactly one way to get better, and this is it. A contradiction between two sections, an operation that cannot be typed the way §8 types it, a convergence claim that does not hold, a latency target that is not reachable on the BEAM &mdash; all of it is useful, and the more specific the better. The form below posts to <code>formspree.io</code> when <em>you</em> press the button, carrying what you typed and nothing else. If you would rather argue somewhere public, <a href="{{CONTACT}}">the issue tracker</a> is the same channel with an audience.</p>
+<!-- Plain form first: action + method work with scripting off, which is the
+     whole reason this is a <form> and not a fetch bolted to a button. The
+     deferred script only upgrades it to an inline reply, and prints success
+     on an actual 2xx and never on submit. SHELL.md r9. -->
+<form class="say" action="{{ENDPOINT}}" method="POST" novalidate>
+<div class="say-row">
+<label class="say-f"><span>Your email</span><input type="email" name="email" autocomplete="email" placeholder="so a reply can reach you" required></label>
+<label class="say-f"><span>Message</span><textarea name="message" rows="3" placeholder="a question, a correction, a number of ours you think is wrong" required></textarea></label>
+</div>
+<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="say-act"><button type="submit">Send</button><p class="say-msg" role="status" aria-live="polite"></p></div>
+</form>
+</section>
+
+</div>
+<footer><div class="in">
+<span class="stamp">{{STAMP}}</span>
+<span class="links"><a href="{{SPEC_URL}}">Spec</a><a href="{{REPO}}">Source</a><a href="{{CONTACT}}">Issues</a><a href="#say">Send a correction</a></span>
+</div>
+<div class="attrib">This page is generated from <code>records/surface.json</code> and from the specification itself, and <code>launch-gate.mjs</code> refuses to publish it when the artifact and the records disagree. Its whole content ships with zero JavaScript &mdash; the two deferred scripts below are the identifying animation, which reads nothing from this page and writes nothing to it, and an inline reply for the form, which posts perfectly well without it. &copy; {{YEAR}} GeoFleetic, a {{PARENT}} project.</div>
+</footer>
+<script src="/fences.js" defer></script>
+<script src="/say.js" defer></script>
+</body></html>

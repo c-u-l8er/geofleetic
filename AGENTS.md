@@ -1,5 +1,12 @@
 # GeoFleetic — Agent Interface
 
+> **Nothing below is callable.** These are *declarations*: three capability
+> contracts and their operations, as JSON in `records/contracts/` and as tables
+> in `docs/spec/README.md` §8. There is no server, no MCP endpoint and no
+> implementation — `build-site.mjs` recounts the implementation at zero lines on
+> every build. "Transport: MCP v1" states what the contracts declare, not
+> something a client can connect to.
+
 GeoFleetic is the spatial intelligence layer for the [&] Protocol ecosystem. It provides `&space` capabilities to AI agents.
 
 ## Capabilities
@@ -29,4 +36,8 @@ GeoFleetic is the spatial intelligence layer for the [&] Protocol ecosystem. It 
 
 ## Status
 
-Spec complete. Implementation pending. See `docs/spec/README.md`.
+`spec` rung. The document exists and its operation tables agree with the
+contract files; that is the whole of it. The spec's own Pre-Phase — FV-1
+through FV-4, the four experiments that would say whether any of this is
+buildable — has not been started, and every task box in the roadmap is unticked.
+See `docs/spec/README.md`, and the status block on the landing page.

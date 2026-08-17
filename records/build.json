@@ -1,0 +1,37 @@
+{
+  "schema": "computedriven-build-v1",
+  "_comment": "Written by build-site.mjs at the end of a successful emit and read by launch-gate.mjs. `inputs` proves the artifact is not stale — a build that threw leaves a previous index.html on disk and the gate would otherwise approve it. `artifacts` proves the emitted bytes have not been hand-edited since. Both directions are needed; either alone has a hole.",
+  "built_at": "2026-08-17T16:59:06.446Z",
+  "stamp": "GEOFLEETIC v0.1.0 · RECORDS 2026-08-17",
+  "environment": {
+    "upstream_contracts_checked": 3,
+    "pulse_manifest_files": 0
+  },
+  "inputs": {
+    "package.json": "a9af4b22c5dbe768a0c8659ff01b64924709697f04fb7704645133c067ea640a",
+    "records/surface.json": "b4dbf9081db92ac4abb40a9d8d9af70b517d4b6642a4fda8bf6f1714bee25d03",
+    "records/spec-facts.json": "df613c4aaf0a571feb73f45a9adfb3bf29e073e185fa71d717db15a541994b04",
+    "src/shell.css": "473d329b8668f9bfe5982eeaadef625a70b9e9f23712609f6c5d4f11c75bb4e3",
+    "src/landing.html": "1abc0c2b783d1c501d2cfe6d8626e99c815856ee98e7bc9a3307521b3809164d",
+    "src/fences.js": "41eb06e40664b563f9207db4f3d9f34b0256c212618aee46e5726f04e41c6273",
+    "src/say.js": "1350a852dd673154b7030971f54286a8faa208ebf8a1dac16da427c83dd3109c",
+    "docs/spec/README.md": "1a364e9fb5b229f2aa2bd56d558c922716150dc6ce73ca04129f186f24311b55",
+    "records/contracts/space.fleet.contract.json": "3e0c18a9079f198c95040f3bea037987fa77105bcab6434f22ce0eafc53aca48",
+    "records/contracts/space.geofence.contract.json": "bb3b5fe600581ebb3b9503dedb0148da155a99128c84c18dbb2ecdabf4bfa193",
+    "records/contracts/space.route.contract.json": "bc363a4eb4a732c2fd3ac6d5dca6fb37d29804d13e574b6b5e589eeb0eee289b"
+  },
+  "artifacts": {
+    "index.html": {
+      "sha256": "10e29b744bb95dc9bd86730324e54397967b2a48656bb944b22261dfff1c4fd9",
+      "bytes": 37093
+    },
+    "fences.js": {
+      "sha256": "2c216621c796ee81a890d7ae78971954cec5ff4e9d19074ac1181c2f34f7257b",
+      "bytes": 5806
+    },
+    "say.js": {
+      "sha256": "357b23ecc6f4862324f5f5d77d6254e70f0c9fa1d93da82cb60aa97a69b5538b",
+      "bytes": 1520
+    }
+  }
+}

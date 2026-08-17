@@ -1,0 +1,190 @@
+{
+  "schema": "computedriven-surface-v1",
+  "_comment": "The frozen record this landing page is GENERATED from. Nothing on the emitted page may state a rung, a status or a count that is not derived here or recomputed by build-site.mjs from the specification and the contract files themselves. launch-gate.mjs reads the emitted index.html and refuses to publish when the two disagree.",
+
+  "shell_revision": "shell-r9",
+  "version": "0.1.0",
+  "origin": "https://geofleetic.com",
+  "repo": "https://github.com/c-u-l8er/geofleetic.com",
+  "surface": "GeoFleetic",
+  "layer": "spatial",
+  "parent": "ComputeDriven",
+
+  "tier": 3,
+  "_tier_comment": "READ THE NAV, NOT THE TEMPLATE. ampersand-nav/src/amp-nav.js records geofleetic as { place: 3, rung: 'spec' } at line 694, and its own renderPlacement() emits the layer sentence for place 2 ONLY — place 3 gets 'a specification in the ComputeDriven world' plus a link to the spec, and place 4 gets attribution only. Three variants, not two. Writing a layer sentence here would put the band in direct contradiction with the nav. Checked 2026-08-17 by reading amp-nav.js; the nav source is lane N's and was NOT edited.",
+  "_nav_rung_agreement": "amp-nav records rung 'spec' for this property. This surface independently measures 'spec' — there is no implementation code in this repository or any other, and the only artifacts are documents. Nav and measurement agree, so there is nothing to print as a divergence.",
+
+  "question": "Can a fleet learn where without anyone collecting where?",
+  "spec_file": "docs/spec/README.md",
+  "spec_url": "https://docs.ampersandboxdesign.com/geofleetic.com/docs/spec/README.md",
+
+  "surface_rung": "spec",
+  "rung_witness": "spec_document_check",
+  "_rung_witness_comment": "SHELL.md r5. A blanket 'any pending gate blocks the rung' rule cannot work here: independent_implementation is pending forever by construction. This names the ONE gate that witnesses the rung — the document exists, is internally consistent, and every section number this page cites resolves in it — and launch-gate.mjs refuses if that named gate is not approved with its evidence.",
+  "surface_rung_covers": "one document — the v0.1 draft at docs/spec/README.md — and the three capability contracts it declares. No implementation exists anywhere: no mix project, no MCP server, no vehicle",
+  "verified_at": "2026-08-17",
+
+  "nav_stack_px": 800,
+  "_nav_stack_comment": "SHELL.md r6: the stacking breakpoint belongs to the surface, not the shell. r5 gave 430px, measured on a four-item nav; the bendrune lane measured 780px on six. MEASURED here: five links plus a button still put the logo beside a wrapping nav at 790px and the row is clean by 815px, so 800px is this surface's value. launch-gate.mjs checks the stylesheet against this number.",
+
+  "status": {
+    "statement": "A draft specification and three machine-readable capability contracts. The contracts were re-read from disk during this build and every operation they declare was matched against the operation tables in the spec; the spec's own structure was recounted from the file.",
+    "source": "build-site.mjs on 2026-08-17: it parses docs/spec/README.md with fenced code blocks stripped, counts its numbered headings, its task boxes and its acceptance criteria, and compares the operation tables in §8 against records/contracts/*.contract.json — which are byte-identical copies of the files in AmpersandBoxDesign/contracts/v0.1.0/, checked by SHA-256 on every build run in the portfolio tree.",
+    "limit": "This establishes that a document exists and that it does not contradict the contract files beside it. It does not establish that any of it works. Nothing here has been compiled, benchmarked, deployed or used: the delta-CRDT convergence claim, the federated-learning privacy claim, the 15% route improvement and every latency figure in the spec are design intentions written down, not measurements. The spec's own Pre-Phase exists precisely because those assumptions are unvalidated, and it has not been started."
+  },
+
+  "advance": {
+    "next_rung": "in_tree",
+    "requires": "A mix project in this repository whose test suite runs. The nearest honest step is the spec's own FV-1 — a minimal epoch-aware delta-CRDT for position, heading and speed, driven through simulated partitions until it either converges within the stated window or does not. One feasibility validation with a result would move this rung; a hundred more pages of specification would not."
+  },
+
+  "artifacts": [
+    {
+      "id": "spec",
+      "name": "The v0.1 draft specification",
+      "where": "docs/spec/README.md",
+      "rung": "spec",
+      "detail": "Seventeen numbered sections covering spatial digital twins as delta-CRDTs, federated route learning over LoRA adapters, GNN route optimization, a geofencing engine, an OTP supervision tree, a data model and a 34-week roadmap. It is a design document with Elixir type declarations in it, not Elixir.",
+      "witness": "The file, re-read and recounted by this build. Every § number cited on this page was resolved against its real headings, with fenced code blocks stripped first."
+    },
+    {
+      "id": "contracts",
+      "name": "Three &space capability contracts",
+      "where": "records/contracts/",
+      "rung": "spec",
+      "detail": "&space.fleet, &space.route and &space.geofence as JSON: named operations with typed input and output slots, the primitives they accept from and feed into, and their A2A skill names. A declaration a client could be written against — not a service a client can call.",
+      "witness": "Byte-identical copies of AmpersandBoxDesign/contracts/v0.1.0/, compared by SHA-256 during this build. Every operation they name was matched against the tables in §8 of the spec."
+    },
+    {
+      "id": "pulse",
+      "name": "The PULSE loop manifest",
+      "where": "docs/spec/ §10.1",
+      "rung": "spec",
+      "detail": "A five-phase loop — retrieve_twin, route_inference, act_dispatch, learn_outcome, consolidate_twin — declared in prose, with its closure, cadence, substrates and cross-loop signals. Every phase maps to one of PULSE's five canonical kinds.",
+      "witness": "Extracted from the spec by this build. It is prose in a Markdown table: no geofleetic.spatial_intelligence.pulse.json exists in PULSE/manifests/, so nothing can validate it against the PULSE v0.1 schema."
+    }
+  ],
+
+  "unmeasured": [
+    {
+      "id": "fv1_crdt",
+      "name": "FV-1 — delta-CRDT convergence",
+      "rung": "spec",
+      "detail": "The spec's own first feasibility validation: prototype a minimal position/heading/speed delta-CRDT, drive a hundred concurrent twin updates through delayed and reordered messages, and check that state converges within five seconds of the partition healing with no lost updates. Everything else in the document assumes this holds.",
+      "needs": "A mix project and a few hundred lines of Elixir. This is the cheapest real result available here.",
+      "built": "no"
+    },
+    {
+      "id": "fv2_federated",
+      "name": "FV-2 — federated learning without EXLA",
+      "rung": "spec",
+      "detail": "Train a LoRA adapter on synthetic routes with Nx and ONNX only, then check that extracting, compressing and aggregating the deltas produces a merged adapter within five percent of a centrally-trained baseline. The privacy argument this whole product rests on is worth nothing if the merged model is worse than useless.",
+      "needs": "A training loop, a synthetic route set, and a baseline to lose to.",
+      "built": "no"
+    },
+    {
+      "id": "fv3_gnn",
+      "name": "FV-3 — a GNN that runs on the BEAM",
+      "rung": "spec",
+      "detail": "Whether Nx can express a graph network for route scoring at all, and at what latency on a fifty-node road graph. The spec carries its own escape hatch — a Python sidecar — and marks the outcome as a decision gate that would rewrite the technology stack and the supervision tree.",
+      "needs": "A benchmark, and a willingness to publish the number if it is bad.",
+      "built": "no"
+    },
+    {
+      "id": "impl",
+      "name": "Any implementation at all",
+      "rung": "spec",
+      "detail": "No mix project, no supervision tree, no MCP server, no PostGIS migration, no Tile38 client. The eight MCP tools named in §9.2 do not exist as code anywhere; the eight names are the whole of them.",
+      "needs": "Phase 0 of the roadmap, which is scheduled after a Pre-Phase that has not begun.",
+      "built": "no"
+    },
+    {
+      "id": "second_impl",
+      "name": "Anyone else implementing these contracts",
+      "rung": "spec",
+      "detail": "A capability contract is only worth something when two parties written by different people agree on it. One unimplemented contract cannot demonstrate that; it can only fail to be contradicted.",
+      "needs": "A provider or a consumer of &space.fleet that we did not write.",
+      "built": "no"
+    }
+  ],
+
+  "zero_counts": [
+    {
+      "label": "Lines of GeoFleetic implementation code",
+      "value": "0",
+      "unit": "lines",
+      "witness": "There is no mix.exs, no lib/, no .ex and no .exs in this repository outside old_scrap/, and no GeoFleetic code in any other repository in the portfolio. Recounted by this build."
+    },
+    {
+      "label": "Feasibility validations run",
+      "value": "0",
+      "unit": "run",
+      "witness": "The spec's Pre-Phase lists FV-1 through FV-4 with pass criteria. Every task box in the document is unticked, and this build counts them."
+    },
+    {
+      "label": "Vehicles tracked, ever",
+      "value": "0",
+      "unit": "vehicles",
+      "witness": "No twin process has ever been started, because no code exists to start one. Every fleet size in the document — 100 simulated vehicles, 10,000 twins, 10K+ assets — is a target in a roadmap."
+    }
+  ],
+
+  "contact": {
+    "kind": "formspree",
+    "endpoint": "https://formspree.io/f/xaewoadr",
+    "url": "https://github.com/c-u-l8er/geofleetic.com/issues",
+    "_comment": "Ruled by Travis 2026-08-17: this is computedriven.com's Formspree endpoint and the portfolio shares it. SHELL.md r9. Deliberately not a mailto: — Travis's call, 2026-08-11 — and launch-gate.mjs refuses any page carrying one. The GitHub issues URL stays as the public, linkable channel for anyone who would rather argue where others can read it."
+  },
+
+  "gates": {
+    "_comment": "A gate may not read approved without its evidence, reviewer and date fields, and launch-gate.mjs enforces that.",
+    "spec_document_check": {
+      "label": "The specification exists, is internally consistent, and every § this page cites resolves in it",
+      "status": "approved",
+      "description": "The witness for the spec rung. build-site.mjs re-reads docs/spec/README.md, strips fenced code blocks, extracts every numbered heading, and launch-gate.mjs then requires every § citation in the emitted page to resolve against that set. The operation tables in §8 are matched against the contract files.",
+      "evidence": "987 lines, 17 numbered top-level sections, 50 numbered headings; 10 contract operations across 3 capabilities, all matching records/contracts/*.contract.json; 0 dangling § citations on the emitted page.",
+      "reviewer": "build-site.mjs and launch-gate.mjs in this repository",
+      "date": "2026-08-17"
+    },
+    "contract_agreement": {
+      "label": "The operation tables in §8 and the contract JSON declare the same operations",
+      "status": "approved",
+      "description": "Each of &space.fleet, &space.route and &space.geofence is declared twice — once as a Markdown table in the spec, once as a JSON contract file in AmpersandBoxDesign. Two hand-maintained copies of one list drift. This build compares them and refuses on any difference in either direction.",
+      "evidence": "locate/enrich/capacity/route, route/optimize/explain, contains/enter_exit/enrich — 10 operations, no additions and no omissions on either side.",
+      "reviewer": "build-site.mjs, comparing records/contracts/ against docs/spec/README.md §8",
+      "date": "2026-08-17"
+    },
+    "feasibility_validation": {
+      "label": "Pre-Phase FV-1 … FV-4 have been run and have results",
+      "status": "pending",
+      "description": "The spec makes the case itself: these are the highest-risk assumptions and they are to be validated before the implementation is committed to. None has been started.",
+      "evidence": null,
+      "reviewer": null,
+      "date": null
+    },
+    "implementation": {
+      "label": "A mix project exists whose test suite runs",
+      "status": "pending",
+      "description": "The condition for the in_tree rung. Phase 0 of the roadmap.",
+      "evidence": null,
+      "reviewer": null,
+      "date": null
+    },
+    "independent_implementation": {
+      "label": "Someone who is not us implements &space.fleet against this contract",
+      "status": "pending",
+      "description": "The condition for the external rung. Pending by construction, and it does not block the rung this surface claims — SHELL.md r5, rung_witness.",
+      "evidence": null,
+      "reviewer": null,
+      "date": null
+    },
+    "pulse_manifest_file": {
+      "label": "The PULSE loop manifest exists as a file that validates against the schema",
+      "status": "pending",
+      "description": "§10.1 declares a PULSE-conforming loop in prose. PULSE/manifests/ holds manifests for graphonomous, prism, agentromatic and the two embodiment loops — not this one. Until the manifest is a file, PULSE/schemas/pulse-loop-manifest.v0.1.json cannot be run against it.",
+      "evidence": null,
+      "reviewer": null,
+      "date": null
+    }
+  }
+}
