@@ -250,6 +250,36 @@ function band() {
     return `<div class="band" data-tier="${surface.tier}"><span class="where">${where}</span>${rung(surface.surface_rung)}${link}<span class="covers">That rung covers ${esc(surface.surface_rung_covers)}.</span></div>`;
 }
 
+/* THE SHARED PORTFOLIO NAV. Ruled by Travis 2026-08-17 — "the ampersand-nav
+   needs to be on each website!" — after this surface and four siblings each
+   dropped it independently on adopting the shell.
+
+   Emitted from the record rather than typed into the template, so the property
+   key has one home. An unknown key is the dangerous failure: amp-nav renders
+   an EMPTY bar for a property it does not know, which looks like a styling
+   problem and not like a wrong string, so the build refuses it here instead.
+
+   The vendored ./amp-nav.js is written by ampersand-nav/sync-nav.sh and is NOT
+   this repo's to edit. It has been present and unreferenced all along. */
+function navChrome() {
+    const key = surface.nav_property;
+    if (!key) throw new Error("BUILD REFUSED — records/surface.json declares no nav_property, so the page cannot say which property the shared nav should render.");
+    if (!existsSync("./amp-nav.js")) throw new Error("BUILD REFUSED — ./amp-nav.js is not in this tree; the page would load the nav from a 404. Run ampersand-nav/sync-nav.sh.");
+    const vendored = read("./amp-nav.js");
+    if (!new RegExp(`^\\s*${key}:\\s*\\{`, "m").test(vendored)) {
+        throw new Error(`BUILD REFUSED — the vendored amp-nav.js has no "${key}" property. An unknown key renders an empty nav bar rather than an error.`);
+    }
+    /* OBSERVED, not fingerprinted as a build INPUT. sync-nav.sh rewrites this
+       file across ~21 repos and lane N runs it last; making it an input would
+       make all five of these gates refuse "stale artifact" the moment lane N
+       syncs, for a file this repo may not edit. Recording the hash keeps the
+       revision retrievable without arming a trap for another lane. */
+    env.amp_nav_sha256 = sha(Buffer.from(vendored, "utf8"));
+    env.amp_nav_bytes = Buffer.byteLength(vendored);
+    env.amp_nav_has_renderPlacement = /renderPlacement/.test(vendored);
+    return `<script type="module" src="/amp-nav.js"></script>\n<amp-nav property="${key}"></amp-nav>`;
+}
+
 function statusBlock() {
     const s = surface.status;
     return `<dl class="status">
@@ -403,6 +433,7 @@ function fill(tpl, vars) {
 const landing = fill(read("./src/landing.html"), {
     CSS,
     BAND: band(),
+    NAV: navChrome(),
     STAMP,
     ORIGIN: surface.origin,
     REPO: surface.repo,

@@ -129,7 +129,7 @@ T("the build record carries the same stamp as the page", build.stamp === STAMP);
     const emitCss = read("./src/shell.css")
         .replace(/\/\*[\s\S]*?\*\//g, "").replace(/\n\s*/g, "").replace(/;\}/g, "}").trim();
     T("/ carries the stylesheet this source compiles to", landing.includes(emitCss),
-        `${emitCss.length.toLocaleString()} bytes of CSS`);
+        `${Buffer.byteLength(emitCss).toLocaleString()} bytes of CSS`);
     const strip = (p) => read(p).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^[ \t]*\/\/.*$/gm, "")
         .replace(/^[ \t]+/gm, "").replace(/[ \t]+$/gm, "").replace(/\n{2,}/g, "\n").trim();
     T("/fences.js is what src/fences.js compiles to", anim.trim() === strip("./src/fences.js"));
@@ -140,19 +140,95 @@ T("/ declares its canonical URL", landing.includes(`<link rel="canonical" href="
 T("/ declares the surface's falsifiable question",
     landing.includes(`<meta name="falsifiable-question" content="${surface.question}">`));
 
-/* ---------- 3. the content ships without JavaScript ----------
-   SHELL.md §8 requires an identifying animation and the animation may cost
-   JS; the page's meaning may not. So: nothing inline, and every external
-   script deferred — the animation, which §12 below proves writes nothing into
-   the document, and the form upgrade, which §5 proves is an upgrade to a form
-   that already posts on its own. */
+/* ==========================================================================
+   3. THE CONTENT SHIPS WITHOUT JAVASCRIPT — NARROWED 2026-08-17, DELIBERATELY
+
+   This check used to read "the only scripts are the identity animation and
+   the form upgrade" — in effect, no JavaScript at all beyond those two. That
+   is the rule this surface dropped <amp-nav> to keep, and it dropped it with
+   no ruling behind the decision.
+
+   TRAVIS HAS NOW RULED: the ampersand-nav belongs on every website. The nav is
+   a WEB COMPONENT; it cannot exist without a script. A check saying "no JS"
+   would therefore have had to be DELETED to obey the ruling. So it is narrowed
+   instead, to the property that was actually being protected:
+
+       NO JAVASCRIPT THE CONTENT DEPENDS ON.
+
+   The partition is explicit and the members are NAMED, never counted, so a
+   third-party tag still cannot slip in on a loosened bound:
+     · CHROME    — /amp-nav.js, the shared portfolio nav. Renders the nav bar
+                   and nothing else on this page. §3b proves the page's text is
+                   character-identical with it deleted.
+     · THE OWN   — /fences.js, the identifying animation, which §12 proves
+                   writes nothing into the document; and /say.js, which §5
+                   proves is an upgrade to a form that already posts.
+   ========================================================================== */
+const CHROME_SCRIPTS = ["/amp-nav.js"];
+const OWN_SCRIPTS = ["/fences.js", "/say.js"];
 {
     const tags = [...markup.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+    const srcs = tags.map((t) => (/\bsrc="([^"]+)"/.exec(t[1]) || [])[1]);
     T("the landing page ships no inline JavaScript", tags.every((t) => t[2].trim() === ""));
-    T("every script is external and deferred", tags.every((t) => /\bsrc="\/[\w.-]+"/.test(t[1]) && /\bdefer\b/.test(t[1])),
-        `${tags.length} script tag(s)`);
-    T("the only scripts are the identity animation and the form upgrade",
-        tags.length === 2 && /src="\/fences\.js"/.test(tags[0][1]) && /src="\/say\.js"/.test(tags[1][1]));
+    /* A type="module" script is deferred by specification — the attribute has
+       no effect on one — so requiring the literal word would refuse the nav
+       for a reason that is not true of it. Both forms are accepted and both
+       are named. */
+    T("every script is external and deferred", tags.every((t) =>
+        /\bsrc="\/[\w.-]+"/.test(t[1]) && (/\bdefer\b/.test(t[1]) || /\btype="module"/.test(t[1]))),
+        `${tags.length} script tag(s): ${tags.map((t) => t[1].trim()).join(" | ")}`);
+    T("the only scripts are the shared nav chrome and this surface's own two",
+        srcs.length === CHROME_SCRIPTS.length + OWN_SCRIPTS.length &&
+        CHROME_SCRIPTS.every((s) => srcs.includes(s)) && OWN_SCRIPTS.every((s) => srcs.includes(s)),
+        srcs.join(", ") || "none");
+    T("no third-party script is loaded", !srcs.some((s) => /^https?:/.test(s)), srcs.join(", "));
+}
+
+/* ==========================================================================
+   3a. THE PORTFOLIO NAV IS ON THE PAGE. Ruled by Travis 2026-08-17:
+   "the ampersand-nav needs to be on each website!"
+
+   This surface and four siblings each dropped <amp-nav> independently when
+   they adopted the shell, to protect the zero-JavaScript content property,
+   and no ruling was ever made either way. It has now been made, and this
+   check exists so it cannot vanish silently a second time — vanishing
+   silently is exactly how it vanished the first time.
+
+   SCOPED TO THE ELEMENT (r14). A `<script src="/amp-nav.js">` mentions the
+   filename and is NOT the custom element: /amp-nav/.test(landing) would be
+   satisfied by the script tag alone and would report PASS with the nav
+   deleted. So this matches the element's opening tag, in `markup` (comments
+   already stripped, so a commented-out nav cannot satisfy it either).
+   ========================================================================== */
+{
+    const els = [...markup.matchAll(/<amp-nav\b([^>]*)>/gi)];
+    T("/ carries the shared portfolio nav ELEMENT, not just its script",
+        els.length === 1, `${els.length} <amp-nav> element(s)`);
+    T("/ files itself under the nav property this surface is recorded as",
+        els.length === 1 && new RegExp(`\\bproperty="${surface.nav_property}"`).test(els[0][1]),
+        els.length ? els[0][1].trim() : "no element");
+    T("the nav component the page loads is in this tree", existsSync("./amp-nav.js"));
+    T("the vendored nav knows this property",
+        new RegExp(`^\\s*${surface.nav_property}:\\s*\\{`, "m").test(read("./amp-nav.js")),
+        `an unknown key renders an EMPTY bar rather than an error — "${surface.nav_property}"`);
+}
+
+/* ---------- 3b. and the nav is CHROME: the content does not depend on it ----
+   The constraint the ruling had to survive, made mechanical rather than
+   asserted in a comment. Delete the nav element AND its script from the
+   artifact, re-extract every text node, and require the result to be
+   character-identical. If <amp-nav> ever starts carrying page content — a
+   fallback list, a status line, anything a reader would miss — this refuses. */
+{
+    const withoutNav = markup
+        .replace(/<script\b[^>]*src="\/amp-nav\.js"[^>]*>\s*<\/script>/gi, "")
+        .replace(/<amp-nav\b[^>]*>[\s\S]*?<\/amp-nav>/gi, "");
+    const before = textNodesOf(markup).join("\u0000");
+    const after = textNodesOf(withoutNav).join("\u0000");
+    T("the page's content does not depend on the nav", before === after,
+        `${before.length} extractable characters with the nav, ${after.length} without it`);
+    T("the nav element carries no content of its own",
+        /<amp-nav\b[^>]*>\s*<\/amp-nav>/i.test(markup), "it must be empty in the artifact");
 }
 
 /* ==========================================================================
@@ -183,7 +259,8 @@ const retractBlock = (() => {
     return landing.slice(i, j);
 })();
 const tally = (hay, needle) => hay.split(needle).length - 1;
-T("the retraction block is present and findable", retractBlock.length > 0, `${retractBlock.length} bytes`);
+T("the retraction block is present and findable", retractBlock.length > 0,
+    `${Buffer.byteLength(retractBlock)} bytes`);
 for (const s of RETRACTED) {
     const onPage = tally(landing, s);
     const inBlock = tally(retractBlock, s);
@@ -191,12 +268,70 @@ for (const s of RETRACTED) {
         onPage === inBlock && inBlock >= 1 && inBlock <= 2,
         `${onPage} on the page, ${inBlock} inside the retraction (bound 1..2)`);
 }
+
+/* ==========================================================================
+   4b. r15 — THE BUILD PUBLISHES FILES THIS CHECK NEVER READ
+
+   r14 was "the gate reads one file; the HOST serves a directory." This is the
+   same defect one layer inward: the BUILD writes more than one file, and a
+   blocklist that reads only index.html is not a blocklist. It was demonstrated
+   on opensentience.org, where a retracted count was planted in a comment
+   inside a published script and the gate reported green — three of that
+   build's four emitted files were exempt from every text rule it had.
+
+   This build emits three. So every retracted string is now tested against ALL
+   of them, and the two that are not the page get a HARD ZERO: a script has no
+   retraction block to hold a quotation, so any occurrence in one is a
+   reinstatement with nowhere to hide. Same for a mailto: and an email address.
+
+   The vendored ./amp-nav.js is deliberately NOT in this set — it is not
+   written by this build, it is written by ampersand-nav/sync-nav.sh and only
+   lane N may change it. It is covered separately, and honestly, in §5.
+   ========================================================================== */
+const PUBLISHED = Object.keys(build.artifacts).filter((p) => p !== "index.html");
+{
+    T("every file this build writes is accounted for by these checks",
+        PUBLISHED.length === 2 && PUBLISHED.includes("fences.js") && PUBLISHED.includes("say.js"),
+        `index.html + ${PUBLISHED.join(", ")}`);
+    for (const f of PUBLISHED) {
+        const body = read("./" + f);
+        const hits = RETRACTED.filter((s) => body.includes(s));
+        T(`/${f} reinstates no retracted claim`, hits.length === 0,
+            hits.length ? `REINSTATED: ${hits.join(" | ")}` : `${RETRACTED.length} strings checked against ${Buffer.byteLength(body)} bytes`);
+        T(`/${f} carries no mailto: and no email address`,
+            !body.includes("mailto:") && !/[\w.+-]+@[\w-]+\.[a-z]{2,}/i.test(body));
+        T(`/${f} carries no unrendered build token`, !/\{\{\w+\}\}/.test(body));
+    }
+}
 T("/ carries the retraction rather than a silent edit",
     landing.includes("Retraction &mdash;") && /None of it existed/.test(landing));
 
 /* ---------- 5. the correction channel: a live form, never a mailbox ---------- */
 T("/ advertises no mailto:", !landing.includes("mailto:"));
 T("/ contains no email address at all", !/[\w.+-]+@[\w-]+\.[a-z]{2,}/i.test(visible));
+
+/* THE ONE MAILTO THIS SURFACE PUBLISHES AND CANNOT REMOVE — declared, bounded
+   and dated rather than silently exempted. Found 2026-08-17 while restoring
+   the nav, and it generalises: the vendored amp-nav.js carries a `contact`
+   entry — "Talk to us", hello@ampersandboxdesign.com, href mailto: — which is
+   an ITEM IN A RENDERED SECTION, so every surface that ships this nav
+   publishes an email address and a mailto: link. That is against the standing
+   portfolio rule (SITES.md §0.5, Travis 2026-08-11: no mailto:, not even as a
+   fallback) and it has been true on the surfaces that kept the nav all along;
+   the rule read index.html and the mailto was in a script, which is r15
+   exactly.
+
+   ampersand-nav/ is lane N's and a vendored copy must not be hand-edited, so
+   this gate does the only honest thing available to it: BOUND the exception at
+   the one occurrence measured, and refuse if it grows. Flagged [TRAVIS] in the
+   lane report. If lane N removes it, this still passes at 0. */
+{
+    const nav = read("./amp-nav.js");
+    const mailtos = nav.split("mailto:").length - 1;
+    T("the vendored nav's mailto: exception has not grown past the one declared",
+        mailtos <= 1,
+        `${mailtos} mailto: in amp-nav.js — a KNOWN portfolio-wide defect owned by lane N, not by this repo`);
+}
 {
     const f = /<form\b([^>]*)>/i.exec(markup);
     T("/ carries a real form, not a fetch bolted to a button", !!f);
@@ -213,7 +348,7 @@ T("/ contains no email address at all", !/[\w.+-]+@[\w-]+\.[a-z]{2,}/i.test(visi
        CSS selector can satisfy is not checking the markup. Found by breaking
        it. */
     const formBlock = (/<form\b[\s\S]*?<\/form>/i.exec(markup) || [""])[0];
-    T("the form carries the honeypot", /name="_gotcha"/.test(formBlock), `${formBlock.length} bytes of form`);
+    T("the form carries the honeypot", /name="_gotcha"/.test(formBlock), `${Buffer.byteLength(formBlock)} bytes of form`);
     T("the reply is announced to a screen reader", /role="status" aria-live="polite"/.test(formBlock));
     const say = read("./say.js");
     T("the form upgrade prints success only on a 2xx", /if \(r\.ok\)/.test(say) && !/say\("Sent/.test(say.split("if (r.ok)")[0]));
@@ -263,12 +398,48 @@ T("/ band carries the declared place", landing.includes(`<div class="band" data-
         surface.tier !== 3 || !landing.includes(`layer of ${surface.parent}`));
 }
 T("the placement band bounds what its rung covers", landing.includes(surface.surface_rung_covers));
+
+/* THE DOCS ROUTE IS THE #/ ROUTE. Ruled by Travis 2026-08-17 — "all the docs
+   have that # in them". This page carried five links in the bare, hash-less
+   form. That form is NOT dead: measured the same day it answers HTTP 200 with
+   an 80,166-byte prerendered page, and the lane that chose it did so on the
+   defensible ground that it resolves with JavaScript off. Travis is ruling the
+   canonical form, not repairing a 404 — and the ruling wins.
+
+   The check is on the SHAPE rather than on the one URL, so a second docs link
+   added later cannot quietly reintroduce the bare form. */
+{
+    const docs = [...landing.matchAll(/https:\/\/docs\.ampersandboxdesign\.com\/[^"'\s<)]*/g)].map((m) => m[0]);
+    const bare = docs.filter((u) => !u.startsWith("https://docs.ampersandboxdesign.com/#/"));
+    T("every docs.ampersandboxdesign.com link is on the #/ route", bare.length === 0,
+        bare.length ? `BARE: ${[...new Set(bare)].join(", ")}` : `${docs.length} link(s), all #/`);
+}
 /* r6: the nav stacking breakpoint is the SURFACE's, measured, and recorded —
    not the shell's 430px, which was measured on a four-item nav. The record
    and the stylesheet must agree or one of them is a guess. */
 T("the nav stacking breakpoint is the one this surface measured",
     new RegExp(`@media\\(max-width:${surface.nav_stack_px}px\\)\\{\\.top\\{flex-direction:column`).test(read("./src/shell.css").replace(/\s*\n\s*/g, "")),
     `${surface.nav_stack_px}px`);
+
+/* r11 — AND THE MEASUREMENT IS BOUND TO THE LABELS IT WAS TAKEN WITH.
+   A breakpoint measured against a nav whose items can be renamed without
+   notice is a stale number waiting to happen: on another surface, renaming one
+   item to "Correct us" — five characters — moved the wrap point 538 → 576,
+   past a 560 breakpoint, marooning the logo in a broken two-row state between
+   561 and 575, and nothing was checking. So the labels are recorded beside the
+   number and the gate refuses when the emitted nav drifts from them. */
+{
+    const navBlock = /<div class="top">[\s\S]*?<\/nav>/.exec(markup);
+    const labels = navBlock
+        ? [...navBlock[0].matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/g)]
+            .map((m) => decode(m[1].replace(/<[^>]+>/g, "")).replace(/\s+/g, " ").trim())
+            .slice(1)                                     /* [0] is the logo */
+        : [];
+    const want = surface.nav_labels_at_measure || [];
+    T("the nav still carries the labels the breakpoint was measured with (r11)",
+        labels.length === want.length && labels.every((l, i) => l === want[i]),
+        labels.join(" · ") || "no nav found");
+}
 
 /* ---------- 6b. every §N on the page resolves in the spec it cites ----------
    Cheap, and it catches a citation that drifted when a spec was rewritten.
@@ -375,7 +546,11 @@ T("review ledger: the external rung is not self-awarded",
 }
 
 /* ---------- 11. density ---------- */
-T("the landing page stays small", landing.length < 40000, `${landing.length.toLocaleString()} bytes`);
+/* r15: String.length counts UTF-16 CODE UNITS, not bytes. This page carries
+   —, §, ↑ and · by the hundred, so the two differ by 89 here — and SITES.md
+   §0.1 makes a local-vs-served BYTE comparison the deploy check, which a
+   character count would fail on any page containing one of them. */
+T("the landing page stays small", Buffer.byteLength(landing) < 40000, `${Buffer.byteLength(landing).toLocaleString()} bytes`);
 
 /* ==========================================================================
    12. SHELL.md §8.5 — THE IDENTIFYING ANIMATION ASSERTS NOTHING
@@ -448,7 +623,7 @@ T("the animation honours prefers-reduced-motion", anim.includes("prefers-reduced
 T("the animation never uses IntersectionObserver", !anim.includes("IntersectionObserver"));
 T("the animation stops when the tab is hidden", anim.includes("document.hidden"));
 T("the animation caps its frame rate", /1000\s*\/\s*FPS/.test(anim));
-T("the animation stays cheap enough for a phone", anim.length < 9000, `${anim.length.toLocaleString()} bytes`);
+T("the animation stays cheap enough for a phone", Buffer.byteLength(anim) < 9000, `${Buffer.byteLength(anim).toLocaleString()} bytes`);
 
 /* ==========================================================================
    13. CONTRAST — every declared text token, on the surface it sits on

@@ -16,7 +16,8 @@
 
   "question": "Can a fleet learn where without anyone collecting where?",
   "spec_file": "docs/spec/README.md",
-  "spec_url": "https://docs.ampersandboxdesign.com/geofleetic.com/docs/spec/README.md",
+  "spec_url": "https://docs.ampersandboxdesign.com/#/geofleetic.com/docs/spec/README.md",
+  "_spec_url_comment": "RULED BY TRAVIS 2026-08-17: 'all the docs have that # in them'. This record held the bare, hash-less form until then, and the five links it fed on the page went with it. BE ACCURATE ABOUT WHAT CHANGED: the bare form is NOT a dead link — measured 2026-08-17 it returns HTTP 200, text/html, an 80,166-byte prerendered page. The #/ form returns the 10.5 MB docsify shell that renders the document client-side. Both resolve; Travis is ruling the canonical form, not repairing a 404. The lane that wrote the bare form chose it deliberately because it resolves without JavaScript, which is true and is now overruled. launch-gate.mjs refuses any docs.ampersandboxdesign.com link that is not on the #/ route, so the two forms cannot drift apart again.",
 
   "surface_rung": "spec",
   "rung_witness": "spec_document_check",
@@ -24,8 +25,14 @@
   "surface_rung_covers": "one document — the v0.1 draft at docs/spec/README.md — and the three capability contracts it declares. No implementation exists anywhere: no mix project, no MCP server, no vehicle",
   "verified_at": "2026-08-17",
 
+  "nav_property": "geofleetic",
+  "_nav_property_comment": "RULED BY TRAVIS 2026-08-17: 'the ampersand-nav needs to be on each website!'. This surface, and four siblings, dropped <amp-nav> when they adopted the shell — each lane independently, to keep the page's content shipping with zero JavaScript, and no ruling had ever been made. It has now been made. This is the key the shared nav files this property under in ampersand-nav/src/amp-nav.js; build-site.mjs refuses to emit if the vendored amp-nav.js does not know it, because an unknown key renders an empty bar rather than an error. NOTE, and it is expected: the vendored copy in this repo is the DEPLOYED 51,428-byte revision, which has no renderPlacement(), so the nav renders without a placement band until lane N syncs the 65,544-byte source. That is lane N's to fix and a vendored copy must not be hand-edited to add it.",
+
   "nav_stack_px": 800,
   "_nav_stack_comment": "SHELL.md r6: the stacking breakpoint belongs to the surface, not the shell. r5 gave 430px, measured on a four-item nav; the bendrune lane measured 780px on six. MEASURED here: five links plus a button still put the logo beside a wrapping nav at 790px and the row is clean by 815px, so 800px is this surface's value. launch-gate.mjs checks the stylesheet against this number.",
+  "nav_wrap_px": 667,
+  "nav_labels_at_measure": ["What it declares", "What is missing", "Evidence", "Status", "Read the spec ↑", "Send a correction"],
+  "_nav_labels_comment": "SHELL.md r11: a stacking breakpoint measured against labels that can be renamed without notice is a stale number waiting to happen — renaming one item to 'Correct us' once moved a wrap point 538 → 576, past a 560 breakpoint, marooning the logo in a broken two-row state. So the labels the measurement was taken with are recorded here and launch-gate.mjs refuses when the emitted nav drifts from them. BISECTED, not computed (r11), in agent-browser session 'navback' on 2026-08-17: 2+ rows at <= 666px, one clean row at >= 667px. Re-bisected AFTER <amp-nav> was restored and the number did not move — the portfolio nav is position:fixed chrome above the page and takes no width from .top.",
 
   "status": {
     "statement": "A draft specification and three machine-readable capability contracts. The contracts were re-read from disk during this build and every operation they declare was matched against the operation tables in the spec; the spec's own structure was recounted from the file.",
