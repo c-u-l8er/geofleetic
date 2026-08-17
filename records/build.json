@@ -1,7 +1,7 @@
 {
   "schema": "computedriven-build-v1",
   "_comment": "Written by build-site.mjs at the end of a successful emit and read by launch-gate.mjs. `inputs` proves the artifact is not stale — a build that threw leaves a previous index.html on disk and the gate would otherwise approve it. `artifacts` proves the emitted bytes have not been hand-edited since. Both directions are needed; either alone has a hole.",
-  "built_at": "2026-08-17T16:59:06.446Z",
+  "built_at": "2026-08-17T17:13:47.668Z",
   "stamp": "GEOFLEETIC v0.1.0 · RECORDS 2026-08-17",
   "environment": {
     "upstream_contracts_checked": 3,

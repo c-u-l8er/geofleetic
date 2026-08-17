@@ -73,10 +73,14 @@ Two checks are newer than the rest and are the ones to understand first:
   Cross-checked against the browser's own computed styles for all four buttons:
   they agreed. It also resolves `min-height` on the animation panel, because
   §8 placement is a computed height and not a string in a stylesheet.
-- **Comment stripping is its own pass** (SHELL.md r8). `<[^>]+>` stops at the
-  first `>`, so a comment containing one leaks its remainder into "page text".
-  The gate proves its own extractor on every run: `SHELL.md` appears in this
-  page's source comments and in none of its text nodes.
+- **Comment stripping is its own pass** (SHELL.md r8), and the page text is
+  built by SPLITTING on tags rather than replacing them with a space. `<[^>]+>`
+  stops at the first `>`, so a comment containing one leaks its remainder into
+  "page text"; and replace-then-split-on-spaces shreds every text node into
+  single words, which made every multi-word rule — including "no signup at the
+  `spec` rung" — silently unfalsifiable until a deliberate break failed to
+  fire. The gate proves its own extractor on every run: `SHELL.md` appears in
+  this page's source comments and in none of its text nodes.
 
 **The band says "a specification in the ComputeDriven world", not "the spatial
 layer of ComputeDriven", and that is deliberate.** `ampersand-nav` records
